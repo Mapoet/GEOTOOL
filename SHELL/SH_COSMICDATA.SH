@@ -42,8 +42,6 @@ SPO=`echo 2014 121 |./DATETIMES 230`;
 EPO=`echo 2020 069 |./DATETIMES 230`;
 SRT=`echo 2019 001 |./DATETIMES 230`; 
 ERT=`echo 2020 112 |./DATETIMES 230`;
-WGETAUTHORITY=" --http-user=guopeng --http-password=760807";
-CURLAUTHORITY=" -k -s -u guopeng:760807";
 # HOSTURL2="https://data.cosmic.ucar.edu/gnss-ro/cosmic2/provisional/spaceWeather/level1b/${year}";
 # ${CDAAC}/${day}/podTc2_prov1_${daydir}.tar.gz;
 HOSTURL="https://cdaac-www.cosmic.ucar.edu/cdaac/rest/tarservice/data";
