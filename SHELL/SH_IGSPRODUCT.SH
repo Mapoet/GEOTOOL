@@ -4,22 +4,22 @@
 #Loc    :SHAO
 
 BINPATH="../BIN";
-WORKPATH="../WORK";
-IGSPATH="../DATA/REALTIME";
+WORKPATH="../TEMP";
+IGSPATH="../DATA/REALTIME/igs";
 if [  $# -ne 3 ];then
-	echo "usage: ./sh_IGSDATA.sh time dday type;";
-	echo "          for type is ionMap,sp3Eph,dcbRnx,clkRnx,resRnx,sscRnx,snxRnx;";
-	echo "       ./sh_IGSDATA.sh  mjd  dday  type;";
-	echo "       ./sh_IGSDATA.sh \"year doy\"  dday  type;";
-	echo "       ./sh_IGSDATA.sh \"year month day\" dday  type;";
-	echo "       ./sh_IGSDATA.sh \"year doy h m s\" dday  type;";
-	echo "       ./sh_IGSDATA.sh \"year month day h m s\" dday  type;";
+	echo "usage: ./SH_IGSPRODUCT.SH time dday type;";
+	echo "          for type is ionMap,zpdRnx,sp3Eph,dcbRnx,erpRnx,clkRnx,resRnx,sscRnx,snxRnx;";
+	echo "       ./SH_IGSPRODUCT.SH  mjd  dday  type;";
+	echo "       ./SH_IGSPRODUCT.SH \"year doy\"  dday  type;";
+	echo "       ./SH_IGSPRODUCT.SH \"year month day\" dday  type;";
+	echo "       ./SH_IGSPRODUCT.SH \"year doy h m s\" dday  type;";
+	echo "       ./SH_IGSPRODUCT.SH \"year month day h m s\" dday  type;";
 	exit;
 fi
+WORKPATH="${WORKPATH}${3}${RANDOM}";
+mkdir ${WORKPATH};
 cd ${WORKPATH};
 ln -s ${BINPATH}/DATETIMES DATETIMES;
-ln -s ${BINPATH}/CRX2RNX CRX2RNX;
-ln -s ${BINPATH}/GFZRNX GFZRNX;
 
 DATEOPT=`echo $1 | awk '{if(NF==1)print "3";\
                          if(NF==2)print "230";\
@@ -59,17 +59,16 @@ for NMJD in `seq $SMJD 1 $EMJD`;do
 	   gunzip "${FN}.Z";
          mv "${FN}" "${IGSPATH}/${FILETYPE}/${FN}";
       fi
-	if [ ${FILETYPE} == "dcbRnx" ];then
-	   FN="cod${GW}${GD}.dcb";
-	   URL="ftp://198.118.242.40/gnss/products/${GW}/${FN}.Z";
+	if [ ${FILETYPE} == "zpdRnx" ];then
+	   #url="ftp://cddis.gsfc.nasa.gov/gnss/products/ionex/2007/005/igsg0050.07i.Z"
+         mkdir "${IGSPATH}/${FILETYPE}/${YEAR}.${DOY}";
+	   FN="????${DOY}0.${YR}zpd";
+	   URL="ftp://198.118.242.40/gnss/products/troposphere/zpd/${YEAR}/${DOY}/${FN}.gz";
 	   wget -q ${URL};
-	   gunzip "${FN}.Z";
-         mv "${FN}" "${IGSPATH}/${FILETYPE}/${FN}";
-	   FN="igs${GW}${GD}.dcb";
-	   URL="ftp://198.118.242.40/gnss/products/${GW}/${FN}.Z";
-	   wget -q ${URL};
-	   gunzip "${FN}.Z";
-         mv "${FN}" "${IGSPATH}/${FILETYPE}/${FN}";
+	   for FILE in `ls ${FN}.gz`;do
+         gunzip "${FILE}";
+         mv "${FILE%.*}" "${IGSPATH}/${FILETYPE}/${YEAR}.${DOY}/${FILE%.*}";
+         done
       fi
 	if [ ${FILETYPE} == "clkRnx" ];then
 	   FN="cod${GW}${GD}.clk";
@@ -133,10 +132,58 @@ for NMJD in `seq $SMJD 1 $EMJD`;do
          mv "${FN}" "${IGSPATH}/${FILETYPE}/${FN}";
       fi
 done
-
+for NMJD in `seq $SMJD 7 $EMJD`;do
+	YEAR=` echo ${NMJD} |./DATETIMES 320 |awk '{print $1;}'`;
+	GW=`   echo ${NMJD} |./DATETIMES 340 |awk '{printf("%4.4d",$1);}'`;
+	GD=`   echo ${NMJD} |./DATETIMES 340 |awk '{printf("%1.1d",$2);}'`;
+	if [ ${FILETYPE} == "erpRnx" ];then
+	   FN="igs"${GW}"7.erp";
+	   URL="ftp://198.118.242.40/gnss/products/${GW}/${FN}.Z";
+	   wget -q ${URL};
+	   gunzip "${FN}.Z";
+         mv "${FN}" "${IGSPATH}/${FILETYPE}/${FN}";
+	   FN="igs"${GW}"7.sum";
+	   URL="ftp://198.118.242.40/gnss/products/${GW}/${FN}.Z";
+	   wget -q ${URL};
+	   gunzip "${FN}.Z";
+         mv "${FN}" "${IGSPATH}/${FILETYPE}/${FN}";
+      fi
+done
+for NMJD in `seq $SMJD 30 $EMJD`;do
+	YEAR=` echo ${NMJD} |./DATETIMES 320 |awk '{print $1;}'`;
+	YR=`   echo ${YEAR} | cut -c3-4`;
+	MT=`  echo ${NMJD} |./DATETIMES 310 |awk '{print $2;}'`;
+	if [ ${FILETYPE} == "dcbRnx" ];then
+	   FN="P1C1${YR}${MT}.DCB";
+	   URL="ftp://ftp.aiub.unibe.ch/CODE/${YEAR}/${FN}.Z";
+	   wget -q ${URL};
+	   gunzip "${FN}.Z";
+         mv "${FN}" "${IGSPATH}/${FILETYPE}/${FN}";
+	   FN="P1C1"${YR}${MT}"_RINEX.DCB";
+	   URL="ftp://ftp.aiub.unibe.ch/CODE/${YEAR}/${FN}.Z";
+	   wget  ${URL};
+	   gunzip "${FN}.Z";
+         mv "${FN}" "${IGSPATH}/${FILETYPE}/${FN}";
+	   FN="P1P2${YR}${MT}.DCB";
+	   URL="ftp://ftp.aiub.unibe.ch/CODE/${YEAR}/${FN}.Z";
+	   wget  ${URL};
+	   gunzip "${FN}.Z";
+         mv "${FN}" "${IGSPATH}/${FILETYPE}/${FN}";
+	   FN="P1P2"${YR}${MT}"_ALL.DCB";
+	   URL="ftp://ftp.aiub.unibe.ch/CODE/${YEAR}/${FN}.Z";
+	   wget  ${URL};
+	   gunzip "${FN}.Z";
+         mv "${FN}" "${IGSPATH}/${FILETYPE}/${FN}";
+	   FN="P2C2"${YR}${MT}"_RINEX.DCB";
+	   URL="ftp://ftp.aiub.unibe.ch/CODE/${YEAR}/${FN}.Z";
+	   wget  ${URL};
+	   gunzip "${FN}.Z";
+         mv "${FN}" "${IGSPATH}/${FILETYPE}/${FN}";
+      fi
+done
 rm -f  DATETIMES;
-rm -f  CRX2RNX;
-rm -f  GFZRNX;
+cd ../SHELL;
+rm -rf ${WORKPATH};
 
 
 

@@ -5,18 +5,18 @@
 
 BINPATH="../BIN";
 WORKPATH="../TEMP";
-IGSPATH="../DATA/REALTIME";
+IGSPATH="../DATA/REALTIME/igs";
 if [  $# -ne 3 ];then
-	echo "usage: ./SH_IGSDATA.SH time dday type;";
+	echo "usage: ./SH_IGSMET.SH time dday type;";
 	echo "          for type is daily,hourly,highrate;";
-	echo "       ./SH_IGSDATA.SH  mjd  dday  type;";
-	echo "       ./SH_IGSDATA.SH \"year doy\"  dday  type;";
-	echo "       ./SH_IGSDATA.SH \"year month day\" dday  type;";
-	echo "       ./SH_IGSDATA.SH \"year doy h m s\" dday  type;";
-	echo "       ./SH_IGSDATA.SH \"year month day h m s\" dday  type;";
+	echo "       ./SH_IGSMET.SH  mjd  dday  type;";
+	echo "       ./SH_IGSMET.SH \"year doy\"  dday  type;";
+	echo "       ./SH_IGSMET.SH \"year month day\" dday  type;";
+	echo "       ./SH_IGSMET.SH \"year doy h m s\" dday  type;";
+	echo "       ./SH_IGSMET.SH \"year month day h m s\" dday  type;";
 	exit;
 fi
-WORKPATH="${WORKPATH}RINEX${RANDOM}";
+WORKPATH="${WORKPATH}MET${RANDOM}";
 mkdir ${WORKPATH};
 cd ${WORKPATH};
 ln -s ${BINPATH}/DATETIMES DATETIMES;
@@ -38,8 +38,8 @@ FILETYPE="$3";
 if [ ! -e ${IGSPATH} ];then
     mkdir ${IGSPATH};
 fi
-if [ ! -e ${IGSPATH}/obsRnx ];then
-    mkdir ${IGSPATH}/obsRnx;
+if [ ! -e ${IGSPATH}/metRnx ];then
+    mkdir ${IGSPATH}/metRnx;
 fi
 
 for NMJD in `seq $SMJD 1 $EMJD`;do
@@ -49,14 +49,14 @@ for NMJD in `seq $SMJD 1 $EMJD`;do
 	GW=`   echo ${NMJD} |./DATETIMES 340 |awk '{printf("%4.4d",$1);}'`;
 	GD=`   echo ${NMJD} |./DATETIMES 340 |awk '{printf("%1.1d",$2);}'`;
 	if [ ${FILETYPE} == "highrate" ];then
-	   #url="ftp://198.118.242.40/gnss/data/highrate/2016/345/16d/06/*";
-	   RNXPATH="${IGSPATH}/obsRnx/${YEAR}.${DOY}.highrate";
-	   if [ ! -e ${RNXPATH} ];then
-	      mkdir ${RNXPATH};
+	   #url="ftp://198.118.242.40/gnss/data/highrate/2016/345/16m/06/*";
+	   METPATH="${IGSPATH}/metRnx/${YEAR}.${DOY}.highrate";
+	   if [ ! -e ${METPATH} ];then
+	      mkdir ${METPATH};
 	   fi
 	   for H in `seq 0 1 23`;do
 	      HH=`printf "%2.2d" ${H}`;
-	      URL=ftp://198.118.242.40/gnss/data/highrate/${YEAR}/${DOY}/${YR}d/${HH}/*.Z;
+	      URL=ftp://198.118.242.40/gnss/data/highrate/${YEAR}/${DOY}/${YR}m/${HH}/*.Z;
 	      wget -q ${URL};
 	      #gunzip *.${YR}d.Z;
 	      for FILE in `ls ????${DOY}?.${YR}d.Z`;do
@@ -65,9 +65,9 @@ for NMJD in `seq $SMJD 1 $EMJD`;do
 	      for FILE in `ls *.${YR}d`;do
 	         cat ${FILE} | ./CRX2RNX > NEWFILE;
 	         rm -f ${FILE};
-	         mv -f NEWFILE ${RNXPATH}/${FILE%.*}.${YR}o ;
+	         mv -f NEWFILE ${METPATH}/${FILE%.*}.${YR}o ;
 	      done
-	      URL=ftp://198.118.242.40/gnss/data/highrate/${YEAR}/${DOY}/${YR}d/${HH}/*.crx.gz;
+	      URL=ftp://198.118.242.40/gnss/data/highrate/${YEAR}/${DOY}/${YR}m/${HH}/*.crx.gz;
 	      wget -q ${URL};
 	      for FILE in `ls *.crx.gz`;do
 	         gunzip ${FILE};
@@ -80,77 +80,64 @@ for NMJD in `seq $SMJD 1 $EMJD`;do
 	           printf("%s%c%s\n",substr($1,1,7),substr(asic,$2,$2+1),substr($1,22,2));}'`;
 	         ./GFZRNX -finp NEWFILE -fout NEWFILE2 -vo 2;
 	         rm -f NEWFILE;
-	         mv -f NEWFILE2 ${RNXPATH}/${NEWNAME}.${YR}o ;
+	         mv -f NEWFILE2 ${METPATH}/${NEWNAME}.${YR}o ;
 	      done
 	   done
       fi
 	if [ ${FILETYPE} == "hourly" ];then
 	   #url="ftp://198.118.242.40/gnss/data/hourly/2016/039/21/*";
-	   RNXPATH="${IGSPATH}/obsRnx/${YEAR}.${DOY}.hourly";
-	   if [ ! -e ${RNXPATH} ];then
-	      mkdir ${RNXPATH};
+	   METPATH="${IGSPATH}/metRnx/${YEAR}.${DOY}.hourly";
+	   if [ ! -e ${METPATH} ];then
+	      mkdir ${METPATH};
 	   fi
 	   for H in `seq 0 1 23`;do
 	      HH=`printf "%2.2d" ${H}`;
-	      URL=ftp://198.118.242.40/gnss/data/hourly/${YEAR}/${DOY}/${HH}/*.${YR}d.Z;
+	      URL=ftp://198.118.242.40/gnss/data/hourly/${YEAR}/${DOY}/${HH}/*.${YR}m.Z;
 	      wget -q ${URL};
 	      #gunzip *.${YR}d.Z;
-	      for FILE in `ls ????${DOY}?.${YR}d.Z`;do
+	      for FILE in `ls ????${DOY}?.${YR}m.Z`;do
 	         gunzip ${FILE};
 	      done
-	      for FILE in `ls *.${YR}d`;do
-	         cat ${FILE} | ./CRX2RNX > NEWFILE;
-	         rm -f ${FILE};
-	         mv -f NEWFILE ${RNXPATH}/${FILE%.*}.${YR}o ;
+	      for FILE in `ls *.${YR}m`;do
+	         mv -f ${FILE} ${METPATH}/${FILE%.*}.${YR}m;
 	      done
-	      URL=ftp://198.118.242.40/gnss/data/hourly/${YEAR}/${DOY}/${HH}/*.crx.gz;
+	      URL=ftp://198.118.242.40/gnss/data/hourly/${YEAR}/${DOY}/${HH}/*.rnx.gz;
 	      wget -q ${URL};
-	      for FILE in `ls *.crx.gz`;do
+	      for FILE in `ls *.rnx.gz`;do
 	         gunzip ${FILE};
 	      done
-	      for FILE in `ls *.crx`;do
-	         cat ${FILE} | ./CRX2RNX > NEWFILE;
-	         rm -f ${FILE};
+	      for FILE in `ls *.rnx`;do
 	         NEWNAME=`echo ${FILE} ${H}| awk \
 	         '{asic="abcdefghijklmnopqrstuvwxyz";\
 	           printf("%s%c%s\n",substr($1,1,7),substr(asic,$2,$2+1),substr($1,22,2));}'`;
-	         ./GFZRNX -finp NEWFILE -fout NEWFILE2 -vo 2;
-	         rm -f NEWFILE;
-	         mv -f NEWFILE2 ${RNXPATH}/${NEWNAME}.${YR}o ;
+	         mv -f ${FILE} ${METPATH}/${NEWNAME}.${YR}m;
 	      done
 	   done
       fi
 	if [ ${FILETYPE} == "daily" ];then
-	   #url="ftp://198.118.242.40/gnss/data/daily/2016/075/16d/*";
-	   RNXPATH="${IGSPATH}/obsRnx/${YEAR}.${DOY}.daily";
-	   if [ ! -e ${RNXPATH} ];then
-	      mkdir ${RNXPATH};
+	   #url="ftp://198.118.242.40/gnss/data/daily/2016/075/16m/*";
+	   METPATH="${IGSPATH}/metRnx/${YEAR}.${DOY}.daily";
+	   if [ ! -e ${METPATH} ];then
+	      mkdir ${METPATH};
 	   fi
-	   URL=ftp://198.118.242.40/gnss/data/daily/${YEAR}/${DOY}/${YR}d/*.Z;
+	   URL=ftp://198.118.242.40/gnss/data/daily/${YEAR}/${DOY}/${YR}m/*.Z;
 	   wget -q ${URL};
 	   #gunzip *.${YR}d.Z;
-	   for FILE in `ls ????${DOY}?.${YR}d.Z`;do
+	   for FILE in `ls ????${DOY}?.${YR}m.Z`;do
 	      gunzip ${FILE};
 	   done
-	   for FILE in `ls *.${YR}d`;do
-	      cat ${FILE} | ./CRX2RNX > NEWFILE;
-	      rm -f ${FILE};
-	      mv -f NEWFILE ${RNXPATH}/${FILE%.*}.${YR}o ;
+	   for FILE in `ls *.${YR}m`;do
+	      mv -f ${FILE} ${METPATH}/${FILE%.*}.${YR}m ;
 	   done
-	   URL=ftp://198.118.242.40/gnss/data/daily/${YEAR}/${DOY}/${YR}d/*.crx.gz;
+	   URL=ftp://198.118.242.40/gnss/data/daily/${YEAR}/${DOY}/${YR}m/*.rnx.gz;
 	   wget -q ${URL};
-	   #gunzip *.crx.gz;
-	   for FILE in `ls *.crx.gz`;do
+	   for FILE in `ls *.rnx.gz`;do
 	      gunzip ${FILE};
 	   done
-	   for FILE in `ls *.crx`;do
-	      cat ${FILE} | ./CRX2RNX > NEWFILE;
-	      rm -f ${FILE};
-	         NEWNAME=`echo ${FILE}| awk \
+	   for FILE in `ls *.rnx`;do
+	      NEWNAME=`echo ${FILE}| awk \
 	         '{printf("%s0\n",substr($1,1,7));}'`;
-	      ./GFZRNX -finp NEWFILE -fout NEWFILE2 -vo 2;
-	      rm -f NEWFILE;
-	      mv -f NEWFILE2 ${RNXPATH}/${NEWNAME}.${YR}o ;
+	      mv -f ${FILE} ${METPATH}/${NEWNAME}.${YR}m;
 	   done
       fi
 done

@@ -1,4 +1,4 @@
-#include "TIMES.h"
+#include "CTIMES.h"
 void ymd2doy(int Yr,int Mh,int Dy,int*Do){
    if(Yr%4!=0||(Yr%100==0&&Yr%400!=0))
       *Do=dayofmonth[0][Mh-1]+Dy;

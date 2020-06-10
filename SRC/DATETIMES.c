@@ -1,4 +1,17 @@
-#include "TIMES.h"
+
+//C source of Mapoet Niphy 
+/*
+Author    :  Mapoet Niphy
+Date      :  2020
+Institude :  SHAO
+Name      :  DATETIMES
+Project   :  GEOTOOL
+
+  Created by Mapoet Niphy on 2020/06/10.
+  Copyright © 2020年 Mapoet Niphy. All rights reserved.
+
+*/
+#include "CTIMES.h"
 
 int main(int argc,char**argv){
 // YMD->1
@@ -77,23 +90,23 @@ int main(int argc,char**argv){
       case 431:if(fscanf(stdin,"%d%d%lf",&Gw,&Gd,&Sd)!=3)continue;
              gpswd2mjd(Gw,Gd,Sd,&Mjd);fprintf(stdout,"%20.11lf\n",Mjd);break;
       case 450:if(fscanf(stdin,"%d%d",&Gw,&Gd)!=2)continue;
-             gpswd2gpsws(Gd,0,&Gs);fprintf(stdout,"%5.4d\n",Gw);break;
+             gpswd2gpsws(Gd,0,&Gs);fprintf(stdout,"%5.4d%12.4lf\n",Gw,Gs);break;
       case 451:if(fscanf(stdin,"%d%d%lf",&Gw,&Gd,&Sd)!=3)continue;
              gpswd2gpsws(Gd,Sd,&Gs);fprintf(stdout,"%5.4d%12.4lf\n",Gw,Gs);break;
-      case 510:if(fscanf(stdin,"%d",&Gw)!=1)continue;
-             gpsws2ymd(Gw,0,&Yr,&Mh,&Dy,&h,&m,&s);fprintf(stdout,"%4.4d%3.2d%3.2d\n",Yr,Mh,Dy);break;
+      case 510:if(fscanf(stdin,"%d%lf",&Gw,&Gs)!=2)continue;
+             gpsws2ymd(Gw,Gs,&Yr,&Mh,&Dy,&h,&m,&s);fprintf(stdout,"%4.4d%3.2d%3.2d\n",Yr,Mh,Dy);break;
       case 511:if(fscanf(stdin,"%d%lf",&Gw,&Gs)!=2)continue;
              gpsws2ymd(Gw,Gs,&Yr,&Mh,&Dy,&h,&m,&s);fprintf(stdout,"%4.4d%3.2d%3.2d%3.2d%3.2d%6.2lf\n",Yr,Mh,Dy,h,m,s);break;
-      case 520:if(fscanf(stdin,"%d",&Gw)!=1)continue;
-             gpsws2doy(Gw,0,&Yr,&Do,&h,&m,&s);fprintf(stdout,"%4.4d%4.3d\n",Yr,Do);break;
+      case 520:if(fscanf(stdin,"%d%lf",&Gw,&Gs)!=2)continue;
+             gpsws2doy(Gw,Gs,&Yr,&Do,&h,&m,&s);fprintf(stdout,"%4.4d%4.3d\n",Yr,Do);break;
       case 521:if(fscanf(stdin,"%d%lf",&Gw,&Gs)!=2)continue;
              gpsws2doy(Gw,Gs,&Yr,&Do,&h,&m,&s);fprintf(stdout,"%4.4d%4.3d%3.2d%3.2d%6.2lf\n",Yr,Do,h,m,s);break;
-      case 530:if(fscanf(stdin,"%d",&Gw)!=1)continue;
-             gpsws2mjd(Gw,0,&Mjd);fprintf(stdout,"%20.11lf\n",Mjd);break;
+      case 530:if(fscanf(stdin,"%d%lf",&Gw,&Gs)!=2)continue;
+             gpsws2mjd(Gw,Gs,&Mjd);fprintf(stdout,"%20.11lf\n",Mjd);break;
       case 531:if(fscanf(stdin,"%d%lf",&Gw,&Gs)!=2)continue;
              gpsws2mjd(Gw,Gs,&Mjd);fprintf(stdout,"%20.11lf\n",Mjd);break;
-      case 540:if(fscanf(stdin,"%d",&Gw)!=1)continue;
-             gpsws2gpswd(0,&Gd,&Sd);fprintf(stdout,"%5.4d%2.1d\n",Gw,Gd);break;
+      case 540:if(fscanf(stdin,"%d%lf",&Gw,&Gs)!=2)continue;
+             gpsws2gpswd(Gw,&Gd,&Sd);fprintf(stdout,"%5.4d%2.1d\n",Gw,Gd);break;
       case 541:if(fscanf(stdin,"%d%lf",&Gw,&Gs)!=2)continue;
              gpsws2gpswd(Gs,&Gd,&Sd);fprintf(stdout,"%5.4d%2.1d%12.4lf\n",Gw,Gd,Sd);break;
       case 100:if(fscanf(stdin,"%d%d%d%lf\n",&Yr,&Mh,&Dy,&d)!=4)continue;
