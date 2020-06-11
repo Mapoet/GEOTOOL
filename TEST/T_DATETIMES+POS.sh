@@ -22,8 +22,8 @@ echo secs between ${tyagos} and ${time} :`echo ${time}  ${tyagos} |../BIN/DATETI
 echo mjd2ydmd $mjd:`echo $mjd |../BIN/DATETIMES 310`;
 
 echo "test pos(34 112 50) in geo..."
-echo "to geod in cart:" `echo 34 112 50|../BIN/POSCONVERT 13`;
-echo "to geod in polar:" `echo 34 112 50|../BIN/POSCONVERT 12`;
+echo "to geo in cart:" `echo 34 112 50|../BIN/POSCONVERT 13`;
+echo "to geo in polar:" `echo 34 112 50|../BIN/POSCONVERT 12`;
 echo "invert geo in cart to in elipise:" `echo -1982905.001    4907862.100   3546474.5234|../BIN/POSCONVERT 31`;
 echo "to gei in cart:" `echo 34 112 50 |../BIN/POSCONVERT 13 "geo2gei:2019 334 00 00 00"`;
 echo "invert gei in cart to geo in elipise:" `echo  -5291319.984    -144760.021   3546474.5234|../BIN/POSCONVERT 31 "gei2geo:2019 334 00 00 00"`;
