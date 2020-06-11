@@ -77,7 +77,7 @@ int main(int argc, char **argv)
          geod2ecef(rin, temp[0], NULL);
          if (argc < 3 || p <= 0)
          {
-            memcpy(temp[1], temp[0], sizeof(temp[0]));
+            memcpy(temp[1], temp[0], sizeof(double)*3);
          }
          else
          {
@@ -161,6 +161,49 @@ int main(int argc, char **argv)
             xform(psys, times, rin, temp[0]);
          }
          cart2pol(rin, &rout[0], &rout[1], &rout[2]);
+         fprintf(stdout, "%15.3lf%15.3lf%15.4lf\n", rout[0], rout[1], rout[2]);
+         break;
+      case 1:
+         if (fscanf(stdin, "%lf%lf%lf", &rin[0], &rin[1], &rin[2]) != 3)
+            continue;
+         geod2ecef(rin, temp[0], NULL);
+         if (argc < 3 || p <= 0)
+         {
+            memcpy(temp[1], temp[0], sizeof(double)*3);
+         }
+         else
+         {
+            xform(psys, times, temp[0], temp[1]);
+         }
+         ecef2geod(temp[1], &rout,NULL);
+         fprintf(stdout, "%15.3lf%15.3lf%15.4lf\n", rout[0], rout[1], rout[2]);
+         break;
+      case 2:
+         if (fscanf(stdin, "%lf%lf%lf", &rin[0], &rin[1], &rin[2]) != 3)
+            continue;
+         pol2cart(rin[0]*DEG2RAD,rin[1]*DEG2RAD,rin[2], temp[0]);
+         if (argc < 3 || p <= 0)
+         {
+            memcpy(temp[1], temp[0], sizeof(double)*3);
+         }
+         else
+         {
+            xform(psys, times, temp[0], temp[1]);
+         }
+         cart2pol(temp[1], &rout[0], &rout[1], &rout[2]);
+         fprintf(stdout, "%15.3lf%15.3lf%15.4lf\n", rout[0], rout[1], rout[2]);
+         break;
+      case 3:
+         if (fscanf(stdin, "%lf%lf%lf", &rin[0], &rin[1], &rin[2]) != 3)
+            continue;
+         if (argc < 3 || p <= 0)
+         {
+            memcpy(rout, rin, sizeof(double)*3);
+         }
+         else
+         {
+            xform(psys, times, rin, rout);
+         }
          fprintf(stdout, "%15.3lf%15.3lf%15.4lf\n", rout[0], rout[1], rout[2]);
          break;
       default:

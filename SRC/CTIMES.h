@@ -5,9 +5,6 @@
 #include <stdlib.h>
 #define  sPresice 0.00001
 static int dayofmonth[2][13]={{0,31,59,90,120,151,181,212,243,273,304,334,365},{0,31,60,91,121,152,182,213,244,274,305,335,366}};
-int iauJd2cal(double dj1, double dj2,
-              int *iy, int *im, int *id, double *fd);
-int iauCal2jd(int iy, int im, int id, double *djm0, double *djm);
 void ymd2doy(int,int,int,int*);
 void ymd2mjd(int,int,int,int,int,double,double*);
 void doy2ymd(int,int,int*,int*);
