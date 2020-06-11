@@ -33,6 +33,8 @@ Project   :
 extern void geod2ecef(const double *gpos, double *epos, double *E);
 extern void ecef2geod(const double *epos, double *gpos, double *E);
 extern void ecsf2satf(const double *state, double *E);
+extern int ele2state(const double *ele, double *state, double *dsde);
+extern void state2ele(const double *state, double *ele);
 extern void cart2pol(double*in, double*lat, double*lon, double*radial);
 extern void pol2cart(double lat, double lon, double radial, double*out);
 /*
