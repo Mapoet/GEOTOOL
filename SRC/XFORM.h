@@ -35,7 +35,8 @@ extern void ecef2geod(const double *epos, double *gpos, double *E);
 extern void ecsf2satf(const double *state, double *E);
 extern int ele2state(const double *ele, double *state, double *dsde);
 extern void state2ele(const double *state, double *ele);
-extern void sphfunc(double az, double el, int nmax, double *fc, double *fs);
+extern void sphfunc_azel(double az, double el, int nmax, double *fc, double *fs);
+extern void sphfunc_latlon(double lat, double lon, int nmax, double *fc, double *fs);
 extern void cart2pol(double*in, double*lat, double*lon, double*radial);
 extern void pol2cart(double lat, double lon, double radial, double*out);
 /*

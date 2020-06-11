@@ -352,7 +352,7 @@ static void LegendreFunc(double x, int nmax, double *p)
 	}
 }
 /* spheric harmonic functions ------------------------------------------------*/
-extern void sphfunc(double az, double el, int nmax, double *fc, double *fs)
+extern void sphfunc_azel(double az, double el, int nmax, double *fc, double *fs)
 {
 	double *p,*cosm,*sinm;
 	int n,m;
@@ -365,6 +365,28 @@ extern void sphfunc(double az, double el, int nmax, double *fc, double *fs)
 		sinm[m]=sin((double)m*az);
 	}
 	LegendreFunc(-cos(2.0*el),nmax,p);
+	
+	fc[0]=1.0;
+	for (n=1;n<=nmax;n++)
+	for (m=0;m<=n;m++) {
+		fc[NM(n,m)]=p[NM(n,m)]*cosm[m];
+		fs[NM(n,m)]=p[NM(n,m)]*sinm[m];
+	}
+	FreeMat(p); FreeMat(cosm); FreeMat(sinm);
+}
+extern void sphfunc_latlon(double lat, double lon, int nmax, double *fc, double *fs)
+{
+	double *p,*cosm,*sinm;
+	int n,m;
+	
+	p=ZMAT(nmax+1,nmax+1); cosm=VEC(nmax+1); sinm=VEC(nmax+1);
+	if (p==NULL||cosm==NULL||sinm==NULL) return;
+	
+	for (m=0;m<=nmax;m++) {
+		cosm[m]=cos((double)m*lon);
+		sinm[m]=sin((double)m*lon);
+	}
+	LegendreFunc(-sin(lat),nmax,p);
 	
 	fc[0]=1.0;
 	for (n=1;n<=nmax;n++)
