@@ -272,7 +272,7 @@ extern int ele2state(const double *ele, double *state, double *dsde)
 % [note]   : tangental orbit element
 % [version]: $Revision: 12 $ $Date: 2008-11-25 10:02:15 +0900 (火, 25 11 2008) $
 %            Copyright(c) 2004-2006 by T.Takasu, all rights reserved
-% [history]: 04/01/05   0.1  new
+% [history]: 04/01/05   0.1  new 
 %----------------------------------------------------------------------------*/
 /* satellite state to orbit element -----------------------------------------*/
 extern void state2ele(const double *state, double *ele)
