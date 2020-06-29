@@ -8,8 +8,8 @@ CPP=g++
 CC=gcc
 INSTALLPATH=../BIN
 CLIB= -lm
-#NCINC= -I/usr/include 
-#NCLIB= -lnetcdff -lnetcdf -I/usr/include 
+NCINC= -I/usr/include 
+NCLIB= /usr/lib/x86_64-linux-gnu/libnetcdff.a /usr/lib/x86_64-linux-gnu/libhdf5_serial_hl.a  /usr/lib/x86_64-linux-gnu/libhdf5_serial.a  -lnetcdf -L/usr/include 
 #PTHEADLIB= -lpthread 
 #RTKLIBFLAG= -DDLL -DENAGLO -DENAGAL -DENACMP -DNFREQ=5 
 BLASLAPACK= -lblas -llapack 
@@ -17,7 +17,7 @@ GFLAG= -O4 -g
 OPMFLAG=  
 AR=ar rv
 
-all:CRX2RNX DATETIMES POSCONVERT
+all:CRX2RNX DATETIMES POSCONVERT NC2TXT
 
 
 prepare:
@@ -44,13 +44,17 @@ DATETIMES:DATETIMES.c CTIMES.o  SOFA.o
 
 POSCONVERT:POSCONVERT.c CTIMES.o XFORM.o  SOFA.o
 	$(CC) POSCONVERT.c -o POSCONVERT CTIMES.o XFORM.o SOFA.o $(GFLAG) $(OPMFLAG) $(CLIB);
-	
+
+NC2TXT:NC2TXT.c  CTIMES.o	
+	$(CC) NC2TXT.c -o NC2TXT CTIMES.o XFORM.o SOFA.o \
+	$(GFLAG) $(OPMFLAG) $(CLIB) $(NCINC) $(NCLIB);
 
 clean:
 	$(if *.o,rm -f *.o)
 	$(if CRX2RNX,rm -f CRX2RNX)
 	$(if DATETIMES,rm -f DATETIMES)
 	$(if POSCONVERT,rm -f POSCONVERT)
+	$(if NC2TXT,rm -f NC2TXT)
 
 install:
 	$(if $(INSTALLPATH),rm -rf $(INSTALLPATH))
@@ -60,5 +64,6 @@ install:
 	cp -f CRX2RNX     $(INSTALLPATH)/CRX2RNX;
 	cp -f DATETIMES     $(INSTALLPATH)/DATETIMES;
 	cp -f POSCONVERT     $(INSTALLPATH)/POSCONVERT;
+	cp -f NC2TXT     $(INSTALLPATH)/NC2TXT;
 
 .PHONY:prepare
