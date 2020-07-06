@@ -9,7 +9,7 @@ CC=gcc
 INSTALLPATH=../BIN
 CLIB= -lm
 NCINC= -I/usr/include 
-NCLIB= /usr/lib/x86_64-linux-gnu/libnetcdff.a /usr/lib/x86_64-linux-gnu/libhdf5_serial_hl.a  /usr/lib/x86_64-linux-gnu/libhdf5_serial.a  -lnetcdf -L/usr/include 
+NCLIB= -lnetcdf -L/usr/include 
 #PTHEADLIB= -lpthread 
 #RTKLIBFLAG= -DDLL -DENAGLO -DENAGAL -DENACMP -DNFREQ=5 
 BLASLAPACK= -lblas -llapack 

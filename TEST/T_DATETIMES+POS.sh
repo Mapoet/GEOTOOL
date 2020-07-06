@@ -2,8 +2,7 @@
 #Author :Mapoet
 #Date   :2020.06.10
 #Loc    :SHAO
-date=`date`;
-time=`echo $date|awk '{print substr($0,1,4),substr($0,7,2),substr($0,11,2),substr($0,19,2),substr($0,22,2),substr($0,25,2)}'`;
+time=`date "+%Y %m %d %H %M %S"`;
 ymd=`echo $time|awk '{print $1,$2,$3}'`;
 tyago=`echo $time|awk '{print $1-10,$2,$3}'`;
 tyagos=`echo $time|awk '{print $1-10,$2,$3,$4,$5,$6}'`;
