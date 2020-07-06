@@ -68,3 +68,13 @@ $s$为时间是否含有`time`部分，有以下含义：(0),只有日期；(1)�
 ## 证明
 
 if $\exist U \gt |x_i|$, and $S_n(\omega)=\sum_{i=0}^n \omega^i x_i$, thus $\exist V,V=\lim_{n->\infty}S_n(\omega)$, when$|\omega|\lt 1$.
+
+
+$$
+\left\{
+\begin{aligned}
+K&=\{\lambda^2 H O_{{ne}^b} H^T +R^{obs}\}^{-1}\\
+X^a&=X^b+O_{{ne}^b} H^T K(Y-HX^b)
+\end{aligned}
+\right.
+$$
