@@ -108,7 +108,7 @@ static int simobs(gtime_t ts, gtime_t te, double tint, const double *rr,
         
 		for (j = ns = 0; j<MAXSAT; j++) {
 			data[j].time = time;
-			satpos(time, time, j, 0, nav, rs, dts, &var, &hlt);
+			satpos(time, time, j+1, 0, nav, rs, dts, &var, &hlt);
 			if (hlt < 0)continue;
 			if ((r = geodist(rs, rr, e)) <= 0.0)
 				continue;
@@ -232,7 +232,6 @@ int main(int argc, char **argv)
     
     /* read simulated/real rinex nav files */
     readrnx(infile[0],0,"",&obs,&nav,NULL);
-    
     if (nav.n<=0) {
         fprintf(stderr,"no nav data\n");
         return -1;
