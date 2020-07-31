@@ -56,7 +56,7 @@ tle.c\
 ublox.c
 
 
-all: CRX2RNX DATETIMES POSCONVERT NC2TXT librtk.a simobs obs2tec txrx2ipp
+all: CRX2RNX DATETIMES POSCONVERT NC2TXT librtk.a simobs simatmion obs2tec txrx2ipp
 
 
 prepare:
@@ -97,6 +97,9 @@ librtk.a:$(RTKOBJ)
 simobs:librtk.a simobs.o
 	$(CC) simobs.o librtk.a $(GFLAG)  $(RTKFLAG) $(INCS) $(LIBS) -o simobs
 
+simatmion:librtk.a simatmion.o
+	$(CC) simatmion.o librtk.a $(GFLAG)  $(RTKFLAG) $(INCS) $(LIBS) -o simatmion
+
 obs2tec:librtk.a obs2tec.o
 	$(CC) obs2tec.o librtk.a $(GFLAG)  $(RTKFLAG) $(INCS) $(LIBS) -o obs2tec
 
@@ -113,6 +116,7 @@ clean:
 	$(if NC2TXT,rm -f NC2TXT)
 	$(if librtk.a,rm -f librtk.a)
 	$(if simobs,rm -f simobs)
+	$(if simatmion,rm -f simatmion)
 	$(if obs2tec,rm -f obs2tec)
 	$(if txrx2ipp,rm -f txrx2ipp)
 
@@ -134,6 +138,7 @@ install:all
 	mkdir "$(INSTALLPATH)/LIB";
 	cp -f librtk.a     $(INSTALLPATH)/LIB/librtk.a;
 	cp -f simobs     $(INSTALLPATH)/BIN/simobs;
+	cp -f simatmion     $(INSTALLPATH)/BIN/simatmion;
 	cp -f obs2tec     $(INSTALLPATH)/BIN/obs2tec;
 	cp -f txrx2ipp     $(INSTALLPATH)/BIN/txrx2ipp;
 	

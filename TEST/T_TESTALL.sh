@@ -30,4 +30,4 @@ echo "to gei in cart:" `echo 34 112 50 |../BIN/POSCONVERT 13 "geo2gei:2019 334 0
 echo "invert gei in cart to geo in elipise:" `echo  -5291319.984    -144760.021   3546474.5234|../BIN/POSCONVERT 31 "gei2geo:2019 334 00 00 00"`;
 
 # Test simobs
-../BIN/simobs -o sim.12o -ts "2012/1/1 00:00:00" -te "2012/1/2 00:00:00" -ti 30 -ele 5 -r 34 120 34 ../DATA/brdc/brdc0010.12n
+../BIN/simobs -o sim.12o -ts "2012/1/1 00:00:00" -te "2012/1/2 00:00:00" -ti 30 -ele -5 -r 34 120 34 ../DATA/brdc/brdc0010.12n
