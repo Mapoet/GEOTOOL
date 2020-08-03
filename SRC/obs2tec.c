@@ -1,3 +1,14 @@
+/*
+Author    :  Mapoet Niphy
+Date      :  2020
+Institude :  SHAO
+Name      :  OBS2STEC
+Project   :  GEOTOOL
+
+  Created by Mapoet Niphy on 2020/06/10.
+  Copyright © 2020年 Mapoet Niphy. All rights reserved.
+
+*/
 #include "rtklib.h"
 #define  MAXOBSEPOCH   (24 * 60 * 60/24)
 #define  MAXWINDOWSIZE      20

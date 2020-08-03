@@ -1,3 +1,15 @@
+
+/*
+Author    :  Mapoet Niphy
+Date      :  2020
+Institude :  SHAO
+Name      :  TXRX2IPP
+Project   :  GEOTOOL
+
+  Created by Mapoet Niphy on 2020/06/10.
+  Copyright © 2020年 Mapoet Niphy. All rights reserved.
+
+*/
 #include "rtklib.h"
 int main(int argc,char** argv){
 	char line[800];

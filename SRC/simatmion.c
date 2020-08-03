@@ -1,3 +1,16 @@
+
+//re-modified simobs.c : observation data simulator
+/*
+Author    :  Mapoet Niphy
+Date      :  2020
+Institude :  SHAO
+Name      :  POSCONVERT
+Project   :  GEOTOOL
+
+  Created by Mapoet Niphy on 2020/06/10.
+  Copyright © 2020年 Mapoet Niphy. All rights reserved.
+
+*/
 /*------------------------------------------------------------------------------
 * simobs.c : observation data simulator
 *

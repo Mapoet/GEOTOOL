@@ -1,3 +1,16 @@
+
+//C source of Mapoet Niphy
+/*
+Author    :  Mapoet Niphy
+Date      :  2020
+Institude :  SHAO
+Name      :  NC2TXT
+Project   :  GEOTOOL
+
+  Created by Mapoet Niphy on 2020/06/10.
+  Copyright © 2020年 Mapoet Niphy. All rights reserved.
+
+*/
 #include <string.h>
 #include <stdio.h>
 #include <netcdf.h>
