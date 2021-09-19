@@ -64,23 +64,3 @@ $s$为时间是否含有`time`部分，有以下含义：(0),只有日期；(1)�
 
 注意事项，在坐标转换过程中，大地坐标形式只适合于地理坐标系，而其他两种在所有坐标系统都适合。但是程序中并没有作此判断，使用者需注意这方面问题。
 具体使用案例见[时间及坐标转换样例](https://github.com/Mapoet/GEOTOOL/blob/master/TEST/T_TESTALL.sh)。
-
-## 证明
-
-if$\exist U \gt |x_i|$, and $S_n(\omega)=\sum_{i=0}^n \omega^i x_i$, thus $\exist V,V=\lim_{n->\infty}S_n(\omega)$, when$|\omega|\lt 1$.
-
-
-$$
-\left\{
-\begin{aligned}
-K&=\{\lambda^2 H O_{{ne}^b} H^T +R^{obs}\}^{-1}\\
-X^a&=X^b+O_{{ne}^b} H^T K(Y-HX^b)
-\end{aligned}
-\right.
-$$
-
-$\alpha+\frac{1}{D}(H-h)=\varepsilon$
-
-$D=[\frac{1}{D_L}+\frac{1}{D_G}]^{-1}$
-
-$h$是碰撞高度，$H$是切点高度，$\varepsilon=\delta \theta+\delta \Theta$在$t_1,t_2$。$h$可以通过气候模型(例如CIRA+Q)或GPSRO数据
